@@ -1,0 +1,57 @@
+{
+  "system_name": "Makan Digital Sanctuary Tokens",
+  "version": "1.0",
+  "colors": {
+    "primary": {
+      "makan-black": "#121111", 
+      "ember-gold": "#D99B2E", 
+      "plaster-sand": "#DBCFB0" 
+    },
+    "secondary": {
+      "rattan-tan": "#B88655", 
+      "terracotta-rust": "#8E3B24", 
+      "leather-brown": "#4A3018", 
+      "icy-mist": "#E0E5EC"
+    },
+    "text": {
+      "dark-mode-primary": "#FDFDFD",
+      "dark-mode-muted": "#A3A3A3",
+      "light-mode-primary": "#121111"
+    }
+  },
+  "typography": {
+    "font_families": {
+      "heading": "var(--font-geometric-sans)",
+      "storytelling": "var(--font-classic-serif)"
+    },
+    "scale_rem": {
+      "hero": "4.5",
+      "h1": "3.0",
+      "h2": "2.25",
+      "body": "1.0",
+      "microcopy": "0.75"
+    }
+  },
+  "spacing_grid": {
+    "base": "8px",
+    "scale": {
+      "xs": "8px",
+      "sm": "16px",
+      "md": "24px",
+      "lg": "32px",
+      "xl": "64px",
+      "xxl": "128px"
+    },
+    "measurement_lines": "1px solid rgba(255, 255, 255, 0.03)" 
+  },
+  "geometry": {
+    "makan_arch_clip_path": "polygon(0% 100%, 0% 30%, 30% 0%, 70% 0%, 100% 30%, 100% 100%)",
+    "makan_arch_border_radius": "50vmax 50vmax 0 0" 
+  },
+  "motion": {
+    "easing": {
+      "cinematic_slow": "cubic-bezier(0.65, 0, 0.35, 1)",
+      "thermal_transition_duration": "2.5s"
+    }
+  }
+}

@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+:root {
+  --makan-black: #121111;
+  --ember-gold: #D99B2E;
+  --plaster-sand: #DBCFB0;
+  --rattan-tan: #B88655;
+  --terracotta-rust: #8E3B24;
+  --leather-brown: #4A3018;
+  --icy-mist: #E0E5EC;
+
+  --text-dark-primary: #FDFDFD;
+  --text-dark-muted: #A3A3A3;
+  --text-light-primary: #121111;
+
+  --font-geometric-sans: var(--font-sans);
+  --font-classic-serif: var(--font-serif);
+}
+
+@theme {
+  --color-makan-black: var(--makan-black);
+  --color-ember-gold: var(--ember-gold);
+  --color-plaster-sand: var(--plaster-sand);
+  --color-rattan-tan: var(--rattan-tan);
+  --color-terracotta-rust: var(--terracotta-rust);
+  --color-leather-brown: var(--leather-brown);
+  --color-icy-mist: var(--icy-mist);
+
+  --color-text-dark-primary: var(--text-dark-primary);
+  --color-text-dark-muted: var(--text-dark-muted);
+  --color-text-light-primary: var(--text-light-primary);
+
+  --font-heading: var(--font-geometric-sans), sans-serif;
+  --font-story: var(--font-classic-serif), serif;
+
+  --ease-cinematic-slow: cubic-bezier(0.65, 0, 0.35, 1);
+  --animate-glow-pulse: glow-pulse 3s infinite ease-in-out;
+  --animate-breathe-glow: breathe-glow 4s infinite ease-in-out;
+  --animate-ken-burns: kenburns 30s infinite ease-in-out;
+  --animate-scroll-dot: scroll-dot 2.2s infinite cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(217, 155, 46, 0.2), 0 0 20px rgba(217, 155, 46, 0.1);
+  }
+  50% {
+    text-shadow: 0 0 25px rgba(217, 155, 46, 0.6), 0 0 45px rgba(217, 155, 46, 0.3);
+  }
+}
+
+@keyframes breathe-glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(217, 155, 46, 0.3), 0 0 20px rgba(217, 155, 46, 0.1);
+    opacity: 0.85;
+  }
+  50% {
+    text-shadow: 0 0 25px rgba(217, 155, 46, 0.8), 0 0 40px rgba(217, 155, 46, 0.4);
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+}
+
+@keyframes kenburns {
+  0% {
+    transform: scale(1.04) translate(0px, 0px);
+  }
+  50% {
+    transform: scale(1.10) translate(12px, -8px);
+  }
+  100% {
+    transform: scale(1.04) translate(0px, 0px);
+  }
+}
+
+
+/* Lenis Smooth Scroll Recommended CSS */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis.lenis-autoToggle {
+  transition-property: overflow;
+  transition-duration: 1ms;
+  transition-behavior: allow-discrete;
+}
+
+/* Wabi-Sabi Custom Layouts & Overlays */
+body {
+  background-color: var(--makan-black);
+  color: var(--text-dark-primary);
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Makan Arch Motif Shape - smooth rounded arch matching the logo */
+.makan-arch {
+  border-top-left-radius: 9999px !important;
+  border-top-right-radius: 9999px !important;
+  clip-path: none !important;
+}
+
+.makan-arch-border {
+  position: relative;
+  border-top-left-radius: 9999px !important;
+  border-top-right-radius: 9999px !important;
+}
+
+.makan-arch-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(180deg, var(--ember-gold), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  -webkit-mask-composite: source-out;
+          mask-composite: exclude;
+  pointer-events: none;
+  border-top-left-radius: 9999px !important;
+  border-top-right-radius: 9999px !important;
+  clip-path: none !important;
+}
+
+/* Engineering Mathematics Grid Overlay */
+.engineering-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  pointer-events: none;
+}
+
+.engineering-line-v {
+  width: 1px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+  height: 100%;
+  position: absolute;
+}
+
+.engineering-line-h {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), transparent);
+  width: 100%;
+  position: absolute;
+}
+
+/* Tadelakt Plaster Background Texture */
+.plaster-texture {
+  background-color: var(--makan-black);
+  background-image: radial-gradient(rgba(219, 207, 176, 0.02) 1px, transparent 0),
+                    radial-gradient(rgba(219, 207, 176, 0.02) 1px, transparent 0);
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px;
+}
+
+/* Hide scrollbar for custom elements */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
