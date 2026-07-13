@@ -69,7 +69,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden flex items-end sm:items-center justify-center bg-makan-black"
+      className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-makan-black"
     >
       {/* Background Image Container — Next/Image for proper viewport fill */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
@@ -85,14 +85,14 @@ export default function Hero() {
           />
         </div>
         {/* Mobile Background */}
-        <div className="block md:hidden w-full h-full relative">
+        <div className="block md:hidden w-full h-full relative bg-makan-black">
           <Image
             src="/hero_bg_mobile.png"
             alt="MAKAN sanctuary interior"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[25%_42%] brightness-[0.68] scale-[1.04] animate-ken-burns"
+            className="object-contain object-center brightness-[0.75]"
           />
         </div>
       </div>
@@ -112,10 +112,10 @@ export default function Hero() {
         <div className="w-12 h-px bg-white/10 mt-1" />
       </div>
 
-      {/* Hero content — pushed to bottom on mobile to reveal girl above */}
+      {/* Hero content */}
       <div
         ref={contentRef}
-        className="relative z-20 text-center px-4 max-w-4xl flex flex-col items-center mb-20 sm:mb-0 sm:mt-12"
+        className="relative z-20 text-center px-4 max-w-4xl flex flex-col items-center mt-8 sm:mt-12"
       >
         {/* MAKAN Wordmark Logo */}
         <div className="overflow-hidden">
