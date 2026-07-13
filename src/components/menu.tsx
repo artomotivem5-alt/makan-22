@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { useCart, MenuItem } from '@/context/cart-context';
 import { Plus, Check } from 'lucide-react';
@@ -169,7 +169,6 @@ const menuItems: MenuDataExtended[] = [
 ];
 
 const categories = [
-  { id: 'all', name: 'ALL SANCTUARIES', image: '/hero_bg.png' },
   { id: 'breakfast', name: 'BREAKFAST', image: '/breakfast.png' },
   { id: 'pizza', name: 'PIZZA LOUNGE', image: '/pizza.png' },
   { id: 'beef', name: 'BEEF LOUNGE', image: '/beef.png' },
@@ -179,83 +178,14 @@ const categories = [
 
 export default function Menu() {
   const { addToCart } = useCart();
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('breakfast');
   const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
-  const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const isManualScrollRef = useRef<boolean>(false);
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
-
-  // 1. IntersectionObserver for Swipe-to-Update Tab Sync
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (!scrollContainer) return;
-
-    const observerOptions = {
-      root: scrollContainer,
-      rootMargin: '0px',
-      threshold: 0.6, // Fire when 60% of the panel is visible
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      // Prevent sync loops when scrolling manually via tab clicks
-      if (isManualScrollRef.current) return;
-
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const categoryId = entry.target.getAttribute('data-category');
-          if (categoryId) {
-            setSelectedCategory(categoryId);
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    const panels = scrollContainer.querySelectorAll('.panel-element');
-    panels.forEach((panel) => observer.observe(panel));
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  // 2. Active Tab Centering Scroll Effect
-  useEffect(() => {
-    const activeTab = tabRefs.current[selectedCategory];
-    if (activeTab) {
-      activeTab.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      });
-    }
-  }, [selectedCategory]);
 
   const handleCategoryChange = (catId: string) => {
     setSelectedCategory(catId);
-
-    const scrollContainer = scrollContainerRef.current;
-    if (scrollContainer) {
-      const targetPanel = scrollContainer.querySelector(`[data-category="${catId}"]`);
-      if (targetPanel) {
-        // Lock Observer updates during the smooth-scroll transition
-        isManualScrollRef.current = true;
-        
-        targetPanel.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'start',
-        });
-
-        // Release lock once scroll finishes (usually 600-800ms)
-        setTimeout(() => {
-          isManualScrollRef.current = false;
-        }, 800);
-      }
-    }
   };
 
   useGSAP(() => {
@@ -282,7 +212,7 @@ export default function Menu() {
         yPercent: 12,
         ease: 'none',
         scrollTrigger: {
-          trigger: '#menu-section',
+          trigger: containerRef.current,
           start: 'top bottom',
           end: 'bottom top',
           scrub: true,
@@ -303,24 +233,24 @@ export default function Menu() {
     <section
       ref={containerRef}
       id="menu-section"
-      className="relative w-full py-24 px-6 bg-[#0c0c0c] text-white overflow-hidden border-t border-white/5"
+      className="relative w-full py-24 bg-[#0c0c0c] text-white overflow-x-clip border-t border-white/5"
     >
-      {/* Cinematic Parallax Background */}
-      <div className="menu-parallax-bg absolute inset-0 -top-[15%] -bottom-[15%] z-0 opacity-30 pointer-events-none">
+      {/* Cinematic Parallax Background — made more visible */}
+      <div className="menu-parallax-bg absolute inset-0 -top-[20%] -bottom-[20%] z-0 opacity-50 pointer-events-none">
         <Image
           src="/hero_bg.png"
           alt="Parallax Background"
           fill
           priority
           sizes="100vw"
-          className="object-cover brightness-[0.35] sepia-[0.15]"
+          className="object-cover brightness-[0.45] sepia-[0.2]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0c0c] via-transparent to-[#0c0c0c]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0c0c] via-[#0c0c0c]/40 to-[#0c0c0c]" />
       </div>
 
       <div className="absolute inset-0 engineering-grid opacity-10 pointer-events-none z-10" />
 
-      <div className="w-full max-w-7xl mx-auto flex flex-col gap-12 relative z-20">
+      <div className="w-full max-w-7xl mx-auto flex flex-col gap-12 relative z-20 px-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-8">
           <div className="flex flex-col gap-2">
@@ -343,7 +273,7 @@ export default function Menu() {
         </div>
 
         {/* STICKY GLASSMORPHIC CATEGORY NAVIGATION */}
-        <div className="sticky top-[72px] z-30 -mx-6 px-6 py-4 bg-[#0c0c0c]/85 backdrop-blur-md border-b border-white/5 overflow-x-auto no-scrollbar flex items-center justify-start gap-4">
+        <div className="sticky top-[64px] z-30 -mx-6 px-6 py-4 bg-[#0c0c0c]/85 backdrop-blur-md border-b border-white/5 overflow-x-auto no-scrollbar flex items-center justify-start gap-4">
           {categories.map((cat) => (
             <button
               key={cat.id}
@@ -372,111 +302,73 @@ export default function Menu() {
           ))}
         </div>
 
-        {/* Swipeable Panels Wrapper */}
-        <div
-          ref={scrollContainerRef}
-          className="flex flex-row overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide w-full touch-pan-y"
-        >
-          {categories.map((cat) => {
-            const panelItems = cat.id === 'all'
-              ? menuItems
-              : menuItems.filter(item => item.lounge === cat.id);
+        {/* Filtered Vertical Menu List — simple, scrollable, no fixed height */}
+        <div className="flex flex-col py-2">
+          {menuItems.filter(item => item.lounge === selectedCategory).map((item) => {
+            const isAdded = addedItems[item.id];
 
             return (
+              /* ── STRICT CARD ANATOMY: flex-row, no background, border-b separator ── */
               <div
-                key={cat.id}
-                data-category={cat.id}
-                className="panel-element min-w-full flex-shrink-0 snap-center md:px-2"
+                key={item.id}
+                className="w-full max-w-md mx-auto flex flex-row items-start gap-4 py-5 border-b border-white/10"
               >
-                {/* Scrollable vertical grid inside panel */}
-                <div className="h-[600px] md:h-[680px] overflow-y-auto no-scrollbar scroll-smooth grid grid-cols-1 md:grid-cols-2 gap-6 py-4 pr-2">
-                  {panelItems.map((item) => {
-                    const isAdded = addedItems[item.id];
-                    const isExpanded = expandedItemId === item.id;
+                {/* LEFT: Arch Image — flex-shrink-0 prevents squishing */}
+                <div className="flex-shrink-0 relative w-20 h-24 min-w-[5rem] overflow-hidden makan-arch border border-white/10">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="80px"
+                    className="object-cover brightness-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-makan-black/30 to-transparent" />
+                </div>
 
-                    return (
-                      <div
-                        key={item.id}
-                        onClick={() => setExpandedItemId(isExpanded ? null : item.id)}
-                        className={`group flex flex-col p-3.5 sm:p-5 bg-[#121111]/30 backdrop-blur-sm border transition-all duration-500 ease-cinematic-slow relative cursor-pointer select-none h-fit ${
-                          isExpanded ? 'border-ember-gold bg-[#121111]/70' : 'border-white/5 hover:border-white/10'
-                        }`}
-                      >
-                        {/* Micro engineering coordinates */}
-                        <div className="absolute top-2 right-2 font-mono text-[7px] sm:text-[8px] text-white/10 uppercase tracking-widest">
-                          ITEM_ID // {item.id.toUpperCase().replace('-', '_')}
-                        </div>
+                {/* RIGHT: Data Container — min-w-0 prevents text overflow */}
+                <div className="flex flex-col flex-1 min-w-0">
+                  {/* Category micro-label */}
+                  <span className="text-[8px] font-mono text-ember-gold tracking-widest uppercase block mb-0.5">
+                    {item.category}
+                  </span>
 
-                        {/* Summary Header */}
-                        <div className="flex gap-4 items-center">
-                          {/* Left: Item image masked by arch */}
-                          <div className="relative w-14 h-18 sm:w-16 sm:h-20 flex-shrink-0 border border-white/5 overflow-hidden makan-arch select-none">
-                            <Image
-                              src={item.image}
-                              alt={item.name}
-                              fill
-                              sizes="64px"
-                              className="object-cover transition-transform duration-[1200ms] group-hover:scale-110 brightness-90"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-makan-black/30 to-transparent" />
-                          </div>
+                  {/* Title */}
+                  <h3 className="font-heading font-semibold text-sm tracking-wide uppercase text-white truncate">
+                    {item.name}
+                  </h3>
 
-                          {/* Right: Content details */}
-                          <div className="flex-1 flex flex-col justify-between text-left">
-                            <div>
-                              <span className="text-[7px] sm:text-[8px] font-mono text-ember-gold tracking-widest uppercase block">
-                                {item.category}
-                              </span>
-                              <h3 className="font-heading font-semibold text-sm sm:text-base tracking-wide uppercase text-white group-hover:text-ember-gold transition-colors duration-300">
-                                {item.name}
-                              </h3>
-                            </div>
+                  {/* Description */}
+                  <p className="font-story text-white/50 text-xs leading-relaxed mt-1 line-clamp-2">
+                    {item.description}
+                  </p>
 
-                            <span className="font-mono text-xs sm:text-sm text-plaster-sand font-medium mt-1 block">
-                              {item.price} <span className="text-[10px] text-plaster-sand/60">L.E</span>
-                            </span>
-                          </div>
-                        </div>
+                  {/* Price & Action Row */}
+                  <div className="flex flex-row justify-between items-center mt-3">
+                    <span className="font-mono text-sm text-ember-gold font-medium">
+                      {item.price} <span className="text-[10px] text-plaster-sand/50">L.E</span>
+                    </span>
 
-                        {/* Collapsible details (Accordion mechanic to save space on mobile) */}
-                        <div
-                          className={`grid transition-all duration-500 ease-in-out overflow-hidden ${
-                            isExpanded ? 'grid-rows-[1fr] opacity-100 mt-4 pt-4 border-t border-white/5' : 'grid-rows-[0fr] opacity-0'
-                          }`}
-                        >
-                          <div className="overflow-hidden flex flex-col gap-3.5 text-left">
-                            <p className="text-[11px] sm:text-xs text-text-dark-muted font-sans leading-relaxed">
-                              {item.description}
-                            </p>
-
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation(); // Avoid closing the accordion when clicking button
-                                handleAddToCart(item);
-                              }}
-                              className={`w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 text-[9px] sm:text-[10px] font-mono tracking-widest uppercase transition-all duration-500 cursor-pointer ${
-                                isAdded
-                                  ? 'bg-emerald-600 text-white'
-                                  : 'bg-white/5 text-plaster-sand hover:bg-ember-gold hover:text-makan-black'
-                              }`}
-                            >
-                              {isAdded ? (
-                                <>
-                                  <Check className="w-3.5 h-3.5" />
-                                  ADDED TO ORDER
-                                </>
-                              ) : (
-                                <>
-                                  <Plus className="w-3.5 h-3.5" />
-                                  ADD TO ORDER
-                                </>
-                              )}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                    <button
+                      onClick={() => handleAddToCart(item)}
+                      className={`flex items-center gap-1.5 border rounded-full px-4 py-1 text-[10px] uppercase tracking-widest transition-all duration-500 cursor-pointer ${
+                        isAdded
+                          ? 'border-emerald-500 text-emerald-400 bg-emerald-500/10'
+                          : 'border-white/20 text-plaster-sand/70 hover:border-ember-gold hover:text-ember-gold'
+                      }`}
+                    >
+                      {isAdded ? (
+                        <>
+                          <Check className="w-3 h-3" />
+                          Added
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="w-3 h-3" />
+                          Add
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             );

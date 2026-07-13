@@ -3,6 +3,8 @@
 import { useRef } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import Image from 'next/image';
+import { useLenis } from 'lenis/react';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,26 +27,42 @@ export default function Hero() {
     );
   }, { scope: containerRef });
 
+  const lenis = useLenis();
+
   const handleScrollToMenu = () => {
-    const menuSection = document.getElementById('menu-section');
-    if (menuSection) {
-      const yOffset = -80; // offset for sticky navigation header
-      const yPosition = menuSection.getBoundingClientRect().top + window.scrollY + yOffset;
-      window.scrollTo({
-        top: yPosition,
-        behavior: 'smooth',
-      });
+    if (lenis) {
+      const menuSection = document.getElementById('menu-section');
+      if (menuSection) {
+        lenis.scrollTo(menuSection, { offset: -80 });
+      }
+    } else {
+      const menuSection = document.getElementById('menu-section');
+      if (menuSection) {
+        const yOffset = -80; // offset for sticky navigation header
+        const yPosition = menuSection.getBoundingClientRect().top + window.scrollY + yOffset;
+        window.scrollTo({
+          top: yPosition,
+          behavior: 'smooth',
+        });
+      }
     }
   };
 
   const handleScrollToLounges = () => {
-    const loungesSection = document.getElementById('lounges-section');
-    if (loungesSection) {
-      const yPosition = loungesSection.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: yPosition,
-        behavior: 'smooth',
-      });
+    if (lenis) {
+      const loungesSection = document.getElementById('lounges-section');
+      if (loungesSection) {
+        lenis.scrollTo(loungesSection);
+      }
+    } else {
+      const loungesSection = document.getElementById('lounges-section');
+      if (loungesSection) {
+        const yPosition = loungesSection.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: yPosition,
+          behavior: 'smooth',
+        });
+      }
     }
   };
 
@@ -53,16 +71,33 @@ export default function Hero() {
       ref={containerRef}
       className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-makan-black"
     >
-      {/* Background Image Container (Absolute Full Screen - zero gaps under any viewport) */}
+      {/* Background Image Container — Next/Image for proper viewport fill */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-        <div
-          className="w-full h-full bg-cover bg-center brightness-[0.38] scale-[1.04] animate-ken-burns"
-          style={{ backgroundImage: `url('/hero_bg.png')` }}
-        />
+        {/* Desktop Background */}
+        <div className="hidden md:block w-full h-full relative">
+          <Image
+            src="/hero_bg.png"
+            alt="MAKAN sanctuary interior"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[80%_center] brightness-[0.52] scale-[1.04] animate-ken-burns"
+          />
+        </div>
+        {/* Mobile Background */}
+        <div className="block md:hidden w-full h-full relative">
+          <Image
+            src="/hero_bg_mobile.png"
+            alt="MAKAN sanctuary interior"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[82%_center] brightness-[0.52] scale-[1.04] animate-ken-burns"
+          />
+        </div>
       </div>
 
-      {/* Engineering overlay grid lines */}
-      <div className="absolute inset-0 engineering-grid z-10" />
+
 
       {/* Precise mathematical alignment ticks */}
       <div className="absolute left-6 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-2 z-20 text-[10px] font-mono text-white/20 tracking-wider">
@@ -80,30 +115,28 @@ export default function Hero() {
       {/* Hero content */}
       <div
         ref={contentRef}
-        className="relative z-20 text-center px-4 max-w-4xl flex flex-col items-center gap-5 mt-8 sm:mt-12"
+        className="relative z-20 text-center px-4 max-w-4xl flex flex-col items-center mt-8 sm:mt-12"
       >
+        {/* MAKAN Wordmark Logo — replaces generic text h1 */}
         <div className="overflow-hidden">
-          <span className="hero-reveal-item block text-[11px] font-mono tracking-[0.4em] text-ember-gold uppercase">
-            [ DESIGNED FOR CONTEMPLATION ]
-          </span>
+          <div className="hero-reveal-item flex justify-center">
+            <Image
+              src="/makan-wordmark.svg"
+              alt="MAKAN"
+              width={400}
+              height={80}
+              priority
+              className="w-[72%] max-w-sm sm:max-w-md md:max-w-lg h-auto select-none hero-wordmark-glow"
+              draggable={false}
+            />
+          </div>
         </div>
 
-        <h1 className="tracking-tight text-white/95 leading-none mt-2 flex flex-col items-center">
-          <div className="overflow-hidden mb-2">
-            <span className="hero-reveal-item block font-story italic text-lg sm:text-2xl md:text-3xl text-plaster-sand">
-              EVERY MOMENT HAS ITS
-            </span>
-          </div>
-          <div className="overflow-hidden pb-3">
-            <span className="hero-reveal-item block font-heading text-6xl sm:text-8xl md:text-[10rem] text-ember-gold animate-breathe-glow tracking-widest leading-none select-none">
-              MAKAN
-            </span>
-          </div>
-        </h1>
-
-        <div className="overflow-hidden max-w-2xl mt-4">
-          <p className="hero-reveal-item font-story italic text-plaster-sand/80 text-base md:text-xl leading-relaxed">
-            Step into a digital sanctuary where fire meets ice, and every choice begins a new moment.
+        {/* Tagline — exact match to brand reference */}
+        <div className="overflow-hidden mt-3">
+          <p className="hero-reveal-item font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.35em] uppercase text-white/80 leading-relaxed">
+            EVERY MOMENT HAS ITS{' '}
+            <span className="font-bold text-white">MAKAN</span>
           </p>
         </div>
 

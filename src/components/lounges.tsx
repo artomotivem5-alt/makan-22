@@ -7,6 +7,7 @@ import { X, Plus, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLenis } from 'lenis/react';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -108,6 +109,92 @@ export default function Lounges() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Lock body scroll when drawer is open
+  const lenis = useLenis();
+
+  useEffect(() => {
+    if (activeDrawer) {
+      document.body.style.overflow = 'hidden';
+      lenis?.stop();
+    } else {
+      document.body.style.overflow = '';
+      lenis?.start();
+    }
+    return () => {
+      document.body.style.overflow = '';
+      lenis?.start();
+    };
+  }, [activeDrawer, lenis]);
+
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  // Touch swipe-down to close drawer gesture handlers (native style)
+  useEffect(() => {
+    const drawer = drawerRef.current;
+    if (!drawer || !activeDrawer) return;
+
+    // Reset any leftover inline transform from previous swipe-to-close gesture
+    drawer.style.transform = '';
+    drawer.style.transition = '';
+
+    let startY = 0;
+    let currentTranslation = 0;
+    let isDraggingGesture = false;
+
+    const handleTouchStartEvent = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      const scrollContainer = drawer.querySelector('.drawer-scroll-container');
+      if (scrollContainer && scrollContainer.contains(target) && scrollContainer.scrollTop > 0) {
+        return;
+      }
+      startY = e.touches[0].clientY;
+      isDraggingGesture = true;
+    };
+
+    const handleTouchMoveEvent = (e: TouchEvent) => {
+      if (!isDraggingGesture) return;
+      const currentY = e.touches[0].clientY;
+      const diff = currentY - startY;
+
+      if (diff > 0) {
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+        currentTranslation = diff;
+        drawer.style.transform = `translateY(${diff}px)`;
+        drawer.style.transition = 'none';
+      }
+    };
+
+    const handleTouchEndEvent = () => {
+      if (!isDraggingGesture) return;
+      isDraggingGesture = false;
+
+      drawer.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+      
+      if (currentTranslation > 100) {
+        drawer.style.transform = 'translateY(100%)';
+        setTimeout(() => {
+          setActiveDrawer(null);
+        }, 300);
+      } else {
+        drawer.style.transform = 'translateY(0)';
+      }
+      
+      currentTranslation = 0;
+    };
+
+    drawer.addEventListener('touchstart', handleTouchStartEvent, { passive: true });
+    drawer.addEventListener('touchmove', handleTouchMoveEvent, { passive: false });
+    drawer.addEventListener('touchend', handleTouchEndEvent, { passive: true });
+
+    return () => {
+      drawer.removeEventListener('touchstart', handleTouchStartEvent);
+      drawer.removeEventListener('touchmove', handleTouchMoveEvent);
+      drawer.removeEventListener('touchend', handleTouchEndEvent);
+    };
+  }, [activeDrawer]);
+
   useEffect(() => {
     return () => {
       if (scrollTimeoutRef.current) {
@@ -117,19 +204,7 @@ export default function Lounges() {
   }, []);
 
   useGSAP(() => {
-    if (!containerRef.current) return;
-
-    // Animate the floating scroll indicator
-    gsap.fromTo('.scroll-explore-indicator',
-      { y: 0 },
-      {
-        y: -10,
-        repeat: -1,
-        yoyo: true,
-        duration: 1.8,
-        ease: 'power1.inOut'
-      }
-    );
+    // GSAP initialization for lounges
   }, { scope: containerRef });
 
   const handleScroll = () => {
@@ -209,18 +284,24 @@ export default function Lounges() {
       });
       setActiveIndex(index);
       setActiveBg(loungesData[index].image);
+      // Open the drawer — same action as the "Explore" button
+      setActiveDrawer(loungesData[index].id);
     }
   };
 
   const handleScrollToMenu = () => {
     const menuSection = document.getElementById('menu-section');
     if (menuSection) {
-      const yOffset = -80; // offset for sticky navigation header
-      const yPosition = menuSection.getBoundingClientRect().top + window.scrollY + yOffset;
-      window.scrollTo({
-        top: yPosition,
-        behavior: 'smooth',
-      });
+      if (lenis) {
+        lenis.scrollTo(menuSection, { offset: -80 });
+      } else {
+        const yOffset = -80; // offset for sticky navigation header
+        const yPosition = menuSection.getBoundingClientRect().top + window.scrollY + yOffset;
+        window.scrollTo({
+          top: yPosition,
+          behavior: 'smooth',
+        });
+      }
     }
   };
 
@@ -397,9 +478,14 @@ export default function Lounges() {
       />
 
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-[#0c0c0c]/80 backdrop-blur-3xl border-t border-white/10 rounded-t-[32px] transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] transform ${
+        ref={drawerRef}
+        data-lenis-prevent
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-[#0c0c0c]/80 backdrop-blur-3xl border-t border-white/10 rounded-t-[32px] flex flex-col shadow-2xl shadow-black/80 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
           activeDrawer ? 'translate-y-0' : 'translate-y-full'
-        } max-h-[82vh] flex flex-col shadow-2xl shadow-black/80`}
+        }`}
+        style={{
+          maxHeight: '82vh',
+        }}
       >
         {/* Drag/Swipe Bar Indicator */}
         <button
@@ -413,7 +499,7 @@ export default function Lounges() {
         {currentDrawerLounge && (
           <>
             {/* Drawer Header */}
-            <div className="px-6 pb-4 flex justify-between items-start border-b border-white/5">
+            <div className="px-6 pb-4 flex justify-between items-start border-b border-white/5" style={{ touchAction: 'none' }}>
               <div className="flex flex-col text-left">
                 <span className="font-mono text-[9px] text-ember-gold tracking-[0.3em] uppercase">
                   {currentDrawerLounge.tagline}
@@ -431,7 +517,7 @@ export default function Lounges() {
             </div>
 
             {/* Menu items list */}
-            <div className="p-6 overflow-y-auto no-scrollbar flex-1 pb-16">
+            <div className="p-6 overflow-y-auto no-scrollbar flex-1 pb-16 drawer-scroll-container" style={{ touchAction: 'pan-y', overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}>
               <div className="flex flex-col gap-4 max-w-4xl mx-auto w-full">
                 {menuItemsByLounge[currentDrawerLounge.id]?.map((item) => {
                   const isAdded = addedItems[item.id];

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "@/components/lenis-provider";
@@ -15,6 +15,13 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
   weight: ["400", "500", "600", "700"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: "MAKAN | Digital Sanctuary & Culinary Arts",

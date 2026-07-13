@@ -197,3 +197,50 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* MAKAN Wordmark Glow — animated ember-gold drop-shadow */
+.hero-wordmark-glow {
+  filter: drop-shadow(0 0 15px rgba(217, 155, 46, 0.35));
+  animation: wordmark-breathe 4s infinite ease-in-out;
+}
+
+@keyframes wordmark-breathe {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(217, 155, 46, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(217, 155, 46, 0.55))
+            drop-shadow(0 0 50px rgba(217, 155, 46, 0.15));
+  }
+}
+
+/* ── CINEMATIC FILM GRAIN NOISE OVERLAY ── */
+.noise-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E') repeat;
+  opacity: 0.024;
+  pointer-events: none;
+  z-index: 40;
+  animation: noise-move 0.2s infinite steps(4);
+}
+
+@keyframes noise-move {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(-2%, 1%); }
+  30% { transform: translate(1%, -2%); }
+  40% { transform: translate(-1%, 3%); }
+  50% { transform: translate(-2%, 1%); }
+  60% { transform: translate(1%, 3%); }
+  70% { transform: translate(2%, 1%); }
+  80% { transform: translate(-2%, 2%); }
+  90% { transform: translate(1%, -3%); }
+  100% { transform: translate(0, 0); }
+}
+

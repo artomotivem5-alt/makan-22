@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useCart } from '@/context/cart-context';
 import { ShoppingBag } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 
 export default function Navbar() {
   const { totalItemsCount, setIsCartOpen } = useCart();
@@ -17,16 +18,24 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const lenis = useLenis();
+
   const handleScrollToSection = (id: string) => {
     setIsMenuOpen(false);
     const el = document.getElementById(id);
     if (el) {
       // Small delay to let the drawer close animation finish first
       setTimeout(() => {
-        window.scrollTo({
-          top: el.offsetTop,
-          behavior: 'smooth',
-        });
+        const yOffset = id === 'menu-section' ? -80 : 0; // offset for sticky navbar in menu section
+        if (lenis) {
+          lenis.scrollTo(el, { offset: yOffset });
+        } else {
+          const yPosition = el.getBoundingClientRect().top + window.scrollY + yOffset;
+          window.scrollTo({
+            top: yPosition,
+            behavior: 'smooth',
+          });
+        }
       }, 300);
     }
   };
@@ -38,15 +47,15 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 px-6 flex items-center justify-between transition-all duration-500 ${
+        className={`fixed top-0 left-0 w-full z-50 px-6 flex items-center justify-between transition-all duration-500 border-b ${
           scrolled
-            ? 'bg-[#0c0c0c]/80 backdrop-blur-md border-b border-white/5 pointer-events-auto py-3'
-            : 'bg-transparent pointer-events-none py-4'
+            ? 'bg-[#121111]/90 backdrop-blur-md pointer-events-auto py-3 border-white/[0.04]'
+            : 'bg-transparent pointer-events-none py-4 border-transparent'
         }`}
       >
         {/* Left: Logo (clickable and pointer-events-auto) */}
         <div
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={() => lenis ? lenis.scrollTo('top') : window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-3 cursor-pointer select-none pointer-events-auto"
         >
           <div className="w-10 h-10 flex-shrink-0">

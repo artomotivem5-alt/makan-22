@@ -10,6 +10,8 @@ import Menu from '@/components/menu';
 import Narrative from '@/components/narrative';
 import Reservation from '@/components/reservation';
 import Cart from '@/components/cart';
+import AestheticPolish from '@/components/aesthetic-polish';
+import ChatBot from '@/components/ChatBot';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -19,11 +21,12 @@ export default function Home() {
       {/* Cinematic Loader Portal */}
       {loading && <Loader onComplete={() => setLoading(false)} />}
 
+      {/* Aesthetic Polish & Grain & Cursor */}
+      <AestheticPolish />
+
       {/* Main Single Page Application Content */}
       <div
-        className={`transition-opacity duration-[1200ms] ${
-          loading ? 'opacity-0 h-screen overflow-hidden' : 'opacity-100'
-        }`}
+        className={`bg-makan-black ${loading ? 'h-screen overflow-hidden' : ''}`}
       >
         {/* Sticky Glassmorphic Navbar Header */}
         <Navbar />
@@ -53,6 +56,9 @@ export default function Home() {
         
         {/* Floating Cart Drawer & Checkout engine */}
         <Cart />
+
+        {/* Wabi-Sabi Customized Assistant Chatbot */}
+        <ChatBot />
       </div>
     </CartProvider>
   );
