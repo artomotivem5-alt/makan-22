@@ -560,15 +560,12 @@ export default function ChatBot() {
       timestamp: new Date().toISOString(),
     };
 
+    // Human-friendly clean Arabic/English text format
     const detailsString = cartItems
-      .map((item) => `Order details: ${item.name} x${item.quantity} - ${item.price} L.E`)
-      .join('\n') + ` | Total: ${totalAmount} L.E`;
+      .map((item) => `• ${item.name} (x${item.quantity}) — ${item.price * item.quantity} L.E`)
+      .join('\n');
 
-    const whatsappMessage = `${detailsString}\n\n[n8n Automation Payload]\n\`\`\`json\n${JSON.stringify(
-      orderPayload,
-      null,
-      2
-    )}\n\`\`\``;
+    const whatsappMessage = `مرحباً مَكان 🍕☕\n\nأود طلب الآتي:\n${detailsString}\n\nإجمالي الحساب: ${totalAmount} L.E`;
 
     const encodedText = encodeURIComponent(whatsappMessage);
     window.open(`https://wa.me/201000000000?text=${encodedText}`, '_blank');
