@@ -76,7 +76,7 @@ export default function Hero() {
         {/* Desktop Background */}
         <div className="hidden md:block w-full h-full relative">
           <Image
-            src="/hero_bg.png"
+            src="/hero_bg_mobile.png"
             alt="MAKAN sanctuary interior"
             fill
             priority
