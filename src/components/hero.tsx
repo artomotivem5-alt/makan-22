@@ -132,26 +132,29 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Tagline */}
-        <div className="overflow-hidden mt-3">
-          <p className="hero-reveal-item font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.35em] uppercase text-white/80 leading-relaxed">
+        {/* Tagline — spacing increased by 12px (mt-6 instead of mt-3) */}
+        <div className="overflow-hidden mt-6">
+          <p 
+            className="hero-reveal-item font-sans text-[10px] sm:text-xs md:text-sm uppercase text-white/80 leading-relaxed"
+            style={{ letterSpacing: '2.5px' }}
+          >
             EVERY MOMENT HAS ITS{' '}
             <span className="font-bold text-white">MAKAN</span>
           </p>
         </div>
 
-        {/* Dual CTAs */}
-        <div className="overflow-hidden mt-8">
+        {/* Dual CTAs — aligned on 8px grid (mt-8) */}
+        <div className="overflow-hidden mt-8 w-full">
           <div className="hero-reveal-item flex flex-row gap-4 justify-center">
             <button
               onClick={handleScrollToMenu}
-              className="px-6 sm:px-8 py-4 bg-ember-gold text-makan-black font-semibold text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:scale-105 shadow-lg shadow-ember-gold/15 border border-ember-gold cursor-pointer"
+              className="w-[130px] sm:w-[160px] h-[46px] sm:h-[54px] flex items-center justify-center bg-[rgba(217,163,74,0.12)] text-[#f3ece2] font-semibold text-xs tracking-[0.2em] uppercase rounded-[3px] border border-ember-gold transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.76,0,0.24,1)] hover:bg-[rgba(217,163,74,0.22)] cursor-pointer"
             >
               ORDER NOW
             </button>
             <button
               onClick={handleScrollToLounges}
-              className="px-6 sm:px-8 py-4 bg-transparent text-plaster-sand hover:text-white font-semibold text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white/5 hover:scale-105 border border-plaster-sand/30 hover:border-white/55 cursor-pointer"
+              className="w-[130px] sm:w-[160px] h-[46px] sm:h-[54px] flex items-center justify-center bg-transparent text-plaster-sand hover:text-white font-semibold text-xs tracking-[0.2em] uppercase rounded-[3px] border border-plaster-sand/30 hover:border-white/55 transition-all duration-[400ms] [transition-timing-function:cubic-bezier(0.76,0,0.24,1)] hover:bg-white/5 cursor-pointer"
             >
               EXPLORE
             </button>

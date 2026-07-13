@@ -37,7 +37,7 @@
   --animate-glow-pulse: glow-pulse 3s infinite ease-in-out;
   --animate-breathe-glow: breathe-glow 4s infinite ease-in-out;
   --animate-ken-burns: kenburns 30s infinite ease-in-out;
-  --animate-scroll-dot: scroll-dot 2.2s infinite cubic-bezier(0.65, 0, 0.35, 1);
+  --animate-scroll-dot: scroll-dot 1.8s infinite cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 @keyframes glow-pulse {
