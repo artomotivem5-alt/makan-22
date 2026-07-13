@@ -92,7 +92,7 @@ export default function Hero() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[30%_60%] brightness-[0.68] scale-[0.85] origin-center"
+            className="object-cover object-[25%_42%] brightness-[0.68] scale-[1.04] animate-ken-burns"
           />
         </div>
       </div>
