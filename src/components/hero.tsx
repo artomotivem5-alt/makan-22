@@ -126,32 +126,32 @@ export default function Hero() {
               width={400}
               height={80}
               priority
-              className="w-[65%] max-w-[260px] sm:max-w-md md:max-w-lg h-auto select-none hero-wordmark-glow"
+              className="w-[82%] max-w-[320px] sm:max-w-md md:max-w-lg h-auto select-none hero-wordmark-glow"
               draggable={false}
             />
           </div>
         </div>
 
         {/* Tagline */}
-        <div className="overflow-hidden mt-2 sm:mt-3">
-          <p className="hero-reveal-item font-sans text-[9px] sm:text-xs md:text-sm tracking-[0.35em] uppercase text-white/80 leading-relaxed">
+        <div className="overflow-hidden mt-3">
+          <p className="hero-reveal-item font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.35em] uppercase text-white/80 leading-relaxed">
             EVERY MOMENT HAS ITS{' '}
             <span className="font-bold text-white">MAKAN</span>
           </p>
         </div>
 
         {/* Dual CTAs */}
-        <div className="overflow-hidden mt-6 sm:mt-8">
-          <div className="hero-reveal-item flex flex-row gap-3 sm:gap-4 justify-center">
+        <div className="overflow-hidden mt-8">
+          <div className="hero-reveal-item flex flex-row gap-4 justify-center">
             <button
               onClick={handleScrollToMenu}
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-ember-gold text-makan-black font-semibold text-[10px] sm:text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:scale-105 shadow-lg shadow-ember-gold/15 border border-ember-gold cursor-pointer"
+              className="px-6 sm:px-8 py-4 bg-ember-gold text-makan-black font-semibold text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:scale-105 shadow-lg shadow-ember-gold/15 border border-ember-gold cursor-pointer"
             >
               ORDER NOW
             </button>
             <button
               onClick={handleScrollToLounges}
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-transparent text-plaster-sand hover:text-white font-semibold text-[10px] sm:text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white/5 hover:scale-105 border border-plaster-sand/30 hover:border-white/55 cursor-pointer"
+              className="px-6 sm:px-8 py-4 bg-transparent text-plaster-sand hover:text-white font-semibold text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white/5 hover:scale-105 border border-plaster-sand/30 hover:border-white/55 cursor-pointer"
             >
               EXPLORE
             </button>
