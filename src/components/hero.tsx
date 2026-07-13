@@ -85,14 +85,14 @@ export default function Hero() {
           />
         </div>
         {/* Mobile Background */}
-        <div className="block md:hidden w-full h-full relative bg-makan-black">
+        <div className="block md:hidden w-full h-full relative">
           <Image
             src="/hero_bg_mobile.png"
             alt="MAKAN sanctuary interior"
             fill
             priority
             sizes="100vw"
-            className="object-contain object-center brightness-[0.75]"
+            className="object-cover object-[30%_center] brightness-[0.55] scale-[1.04] animate-ken-burns"
           />
         </div>
       </div>
@@ -140,18 +140,18 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Dual CTAs — always side by side */}
-        <div className="overflow-hidden mt-5 sm:mt-6 w-full sm:w-auto">
+        {/* Dual CTAs */}
+        <div className="overflow-hidden mt-6 sm:mt-8">
           <div className="hero-reveal-item flex flex-row gap-3 sm:gap-4 justify-center">
             <button
               onClick={handleScrollToMenu}
-              className="px-5 sm:px-8 py-3 sm:py-4 bg-ember-gold text-makan-black font-semibold text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:scale-105 shadow-lg shadow-ember-gold/15 hover:shadow-white/10 border border-ember-gold cursor-pointer"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-ember-gold text-makan-black font-semibold text-[10px] sm:text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:scale-105 shadow-lg shadow-ember-gold/15 border border-ember-gold cursor-pointer"
             >
               ORDER NOW
             </button>
             <button
               onClick={handleScrollToLounges}
-              className="px-5 sm:px-8 py-3 sm:py-4 bg-transparent text-plaster-sand hover:text-white font-semibold text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white/5 hover:scale-105 border border-plaster-sand/30 hover:border-white/55 cursor-pointer"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-transparent text-plaster-sand hover:text-white font-semibold text-[10px] sm:text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white/5 hover:scale-105 border border-plaster-sand/30 hover:border-white/55 cursor-pointer"
             >
               EXPLORE
             </button>
