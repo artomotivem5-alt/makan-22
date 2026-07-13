@@ -87,12 +87,12 @@ export default function Hero() {
         {/* Mobile Background */}
         <div className="block md:hidden w-full h-full relative">
           <Image
-            src="/hero_bg_mobile.png"
+            src="/hero_bg.png"
             alt="MAKAN sanctuary interior"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[82%_center] brightness-[0.52] scale-[1.04] animate-ken-burns"
+            className="object-cover object-[75%_25%] brightness-[0.52] scale-[1.04] animate-ken-burns"
           />
         </div>
       </div>
