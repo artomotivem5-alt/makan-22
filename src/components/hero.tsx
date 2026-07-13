@@ -69,7 +69,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-makan-black"
+      className="relative w-full h-screen overflow-hidden flex items-end sm:items-center justify-center bg-makan-black"
     >
       {/* Background Image Container — Next/Image for proper viewport fill */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
@@ -112,12 +112,12 @@ export default function Hero() {
         <div className="w-12 h-px bg-white/10 mt-1" />
       </div>
 
-      {/* Hero content */}
+      {/* Hero content — pushed to bottom on mobile to reveal girl above */}
       <div
         ref={contentRef}
-        className="relative z-20 text-center px-4 max-w-4xl flex flex-col items-center mt-8 sm:mt-12"
+        className="relative z-20 text-center px-4 max-w-4xl flex flex-col items-center mb-20 sm:mb-0 sm:mt-12"
       >
-        {/* MAKAN Wordmark Logo — replaces generic text h1 */}
+        {/* MAKAN Wordmark Logo */}
         <div className="overflow-hidden">
           <div className="hero-reveal-item flex justify-center">
             <Image
@@ -126,35 +126,34 @@ export default function Hero() {
               width={400}
               height={80}
               priority
-              className="w-[72%] max-w-sm sm:max-w-md md:max-w-lg h-auto select-none hero-wordmark-glow"
+              className="w-[65%] max-w-[260px] sm:max-w-md md:max-w-lg h-auto select-none hero-wordmark-glow"
               draggable={false}
             />
           </div>
         </div>
 
-        {/* Tagline — exact match to brand reference */}
-        <div className="overflow-hidden mt-3">
-          <p className="hero-reveal-item font-sans text-[10px] sm:text-xs md:text-sm tracking-[0.35em] uppercase text-white/80 leading-relaxed">
+        {/* Tagline */}
+        <div className="overflow-hidden mt-2 sm:mt-3">
+          <p className="hero-reveal-item font-sans text-[9px] sm:text-xs md:text-sm tracking-[0.35em] uppercase text-white/80 leading-relaxed">
             EVERY MOMENT HAS ITS{' '}
             <span className="font-bold text-white">MAKAN</span>
           </p>
         </div>
 
-        {/* Dual CTAs with reveal wrapper */}
-        <div className="overflow-hidden mt-6 w-full sm:w-auto">
-          <div className="hero-reveal-item flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
+        {/* Dual CTAs — always side by side */}
+        <div className="overflow-hidden mt-5 sm:mt-6 w-full sm:w-auto">
+          <div className="hero-reveal-item flex flex-row gap-3 sm:gap-4 justify-center">
             <button
               onClick={handleScrollToMenu}
-              className="px-8 py-4 bg-ember-gold text-makan-black font-semibold text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:scale-105 shadow-lg shadow-ember-gold/15 hover:shadow-white/10 border border-ember-gold cursor-pointer"
+              className="px-5 sm:px-8 py-3 sm:py-4 bg-ember-gold text-makan-black font-semibold text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:scale-105 shadow-lg shadow-ember-gold/15 hover:shadow-white/10 border border-ember-gold cursor-pointer"
             >
               ORDER NOW
             </button>
-            
             <button
               onClick={handleScrollToLounges}
-              className="px-8 py-4 bg-transparent text-plaster-sand hover:text-white font-semibold text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white/5 hover:scale-105 border border-plaster-sand/30 hover:border-white/55 cursor-pointer"
+              className="px-5 sm:px-8 py-3 sm:py-4 bg-transparent text-plaster-sand hover:text-white font-semibold text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white/5 hover:scale-105 border border-plaster-sand/30 hover:border-white/55 cursor-pointer"
             >
-              EXPLORE LOUNGES
+              EXPLORE
             </button>
           </div>
         </div>
